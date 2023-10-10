@@ -26,7 +26,35 @@ Errors werden in ein assoziativen Array gespeichert, diese werden dann auch ausg
 Testen der Anwendung:
 mittels Netzwerkanalyse und manipulieren (im browser) der clientside validierung
 
+## Theorie
 
+### Kapitel 4
+JS einbinden, entweder inline (html durch \<script>), in einem externen File(Lokal/Einbindung durch eine cdn)
+
+dialog mit alert(mitgabe);
+console.log() / .debug() / .error() / .info() / .warn()
+
+let, const, var usw. weiß ich alles schon
+
+... JS kann ich schon
+
+try catch ganz normal wie in java oder php
+
+js objekt ohne Klassen definition:
+{
+    title: 'Hello World',
+    age: 23,
+    ...
+}
+
+Objekte und Arrays kann ich genau so, nur Methoden sind neu:
+
+#### Array methoden:
+![Alt text](image.png)
+
+### Kapitel 5.1
+HTTP ist Client-Server modell
+![Alt text](image-1.png)
 
 ## 2
 
