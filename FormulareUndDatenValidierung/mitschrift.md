@@ -53,7 +53,7 @@ Objekte und Arrays kann ich genau so, nur Methoden sind neu:
 ![Alt text](image.png)
 
 ### Kapitel 5.1
-HTTP ist Client-Server modell
+HTTP ist Client-Server modell\
 ![Alt text](image-1.png)
 
 ## 2
