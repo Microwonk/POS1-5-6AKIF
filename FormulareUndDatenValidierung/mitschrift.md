@@ -56,7 +56,7 @@ Objekte und Arrays kann ich genau so, nur Methoden sind neu:
 HTTP ist Client-Server modell
 ![Alt text](image-1.png)
 
-Requests und Responses in HTTP sehen so aus:
+Requests und Responses in HTTP sehen so aus:\
 ![Alt text](image-2.png)
 
 dabei gibt es verschiedene HTTP methoden:
@@ -73,20 +73,17 @@ dabei gibt es verschiedene HTTP methoden:
 am häufigsten werden GET (holen von Daten) und POST (senden von Daten) verwendet.
 
 dazu gibt es auch noch header : ein Authentication Header, ob man bei dieser HTTP response berechtigt ist, Content-Type (zb. application/json (siehe MIME))...
-Einige Header aufgelistet:
-
+Einige Header aufgelistet:\
 ![Alt text](image-3.png)
 
 Der Body beihnaltet dann immer das, was man mitschickt, oder geschickt bekommt. (siehe in der Abbildung in Json-Format)
 
-In der Abbildung sieht man auch den Status-Code der Response: 201 Created / 200 OK sind z.B. Erfolg. 400 Bad Request / 401 Unauthorized / 403 Forbidden / 404 Not Found sind z.B. Failure Codes
-
+In der Abbildung sieht man auch den Status-Code der Response: 201 Created / 200 OK sind z.B. Erfolg. 400 Bad Request / 401 Unauthorized / 403 Forbidden / 404 Not Found sind z.B. Failure Codes\
 ![Alt text](image-4.png)
 
 #### MIME
 
-Multipurpose Internet Mail Extenstion Types, definieren welches Format die übertragenen Daten haben.
-
+Multipurpose Internet Mail Extenstion Types, definieren welches Format die übertragenen Daten haben.\
 ![Alt text](image-5.png)...
 
 #### Cookies
@@ -98,14 +95,12 @@ HTTP kann auch durch curl (cli oder library in einer Programmiersprache) geregel
 ### Kapitel 7
 
 DOM ist das Document Object Model, Browser parsed das HTML in DOM um.
-Der DOM modelliert alle HTML Elemente und Attribute usw. in das DOM hierarchisch in eine Baumstruktur um:
-
+Der DOM modelliert alle HTML Elemente und Attribute usw. in das DOM hierarchisch in eine Baumstruktur um: \
 ![Alt text](image-6.png)
 
 der Dokumentknoten dient als Wurzel aller Elemente einer HTML-Seite. Es gibt insgesamt vier wichtige Knoten im DOM: Dokumentknoten(wurzelknoten), Elementknoten(head, body usw), Attributknoten(id, value usw), Textknoten(plaintext)
 
-Knoten-selektierung mittels Javascript:
-
+Knoten-selektierung mittels Javascript:\
 ![Alt text](image-7.png)
 
 HTML-Elemente können mittels Javascript mit verschiedenen Methoden und Eigenschaften manipuliert werden: innerHTML(), createTextNode(node), appendChild(), classList(), textContent(), createElement(), removeChild(), createElement(elementName), attribute setzen usw. 
