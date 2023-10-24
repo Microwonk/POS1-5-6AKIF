@@ -14,6 +14,7 @@
 
         <?php
         require "lib/func.inc.php";
+        require "lib/db.func.inc.php";
 
         define('NAME', 'name');
         define('DATE', 'date');
@@ -37,10 +38,10 @@
             $height = $_POST[HEIGHT] ?? '';
             $weight = $_POST[WEIGHT] ?? '';
 
-
             if (validate($name, $date, $height, $weight)) {
                 list($bmi, $text) = calculateBMI($height, $weight);
                 echo "<p class='alert alert-success'>BMI: " . number_format($bmi, 2) . " - " . $text . "</p>";
+                save($name, $date, $bmi);
             } else {
                 echo "<div class='alert alert-danger'><p>Die eingegebenen Daten sind fehlerhaft!</p><ul>";
                 foreach ($errors as $key => $value) {
@@ -136,6 +137,11 @@
                     <img src="images/ampel.png" alt="Anzeige des BMI in Ampel-Form" id="ampel">
                 </div>
 
+            </div>
+
+
+            <div class="row">
+                <?= include "index_statistik.php"; ?>
             </div>
 
         </div>
