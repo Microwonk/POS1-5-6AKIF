@@ -1,9 +1,9 @@
 <?php
 
 $dbName = 'php12';
-$dbHost = 'localhost';
+$dbHost = 'mysql';
 $dbUsername = 'root';
-$dbUserPassword = '';
+$dbUserPassword = '123';
 
 /**
  * Verbindung zur DB aufbauen
@@ -41,7 +41,7 @@ function save($name, $date, $bmi)
 function getAll()
 {
     $db = connect();
-    $sql = 'SELECT * FROM bmi ORDER BY name ASC, date ASC';
+    $sql = 'SELECT * FROM bmi ORDER BY date DESC';
     $stmt = $db->prepare($sql);
     $stmt->execute();
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
