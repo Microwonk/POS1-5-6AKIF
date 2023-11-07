@@ -11,7 +11,7 @@
     <h1 class="mt-5 mb-3">Benutzerdetails</h1>
 
     <div class="row">
-        <a href="index.php" class="text-decoration-none mb-3">zurück</a>
+        <a href="index.php?search=<?=$_GET['search'] ??= ''?>" class="text-decoration-none mb-3">zurück</a>
     </div>
 
     <div>
