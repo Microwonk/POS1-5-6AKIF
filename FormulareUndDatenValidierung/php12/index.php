@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="js/funcs.js"></script>
     <title>BMI-Rechner</title>
 </head>
@@ -140,8 +142,8 @@
             </div>
 
 
-            <div class="row">
-                <?= include "index_statistik.php"; ?>
+            <div class="row table">
+                <?php include "index_statistik.php"; ?>
             </div>
 
         </div>

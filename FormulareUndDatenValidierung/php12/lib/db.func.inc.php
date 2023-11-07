@@ -48,4 +48,17 @@ function getAll()
     return $data;
 }
 
+/**
+ * Lösche einen Datensatz anhand seiner ID
+ * @param $recordId
+ */
+function deleteRecord($recordId)
+{
+    $db = connect();
+    $sql = 'DELETE FROM bmi WHERE id = ?';
+    $stmt = $db->prepare($sql);
+    $stmt->execute(array($recordId));
+}
+
+
 ?>
