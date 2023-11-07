@@ -142,7 +142,7 @@
             </div>
 
 
-            <div class="row">
+            <div class="row table">
                 <?php include "index_statistik.php"; ?>
             </div>
 

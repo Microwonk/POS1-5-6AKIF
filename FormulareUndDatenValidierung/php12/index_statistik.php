@@ -1,8 +1,5 @@
 <h1 class="mt-3">Statistik</h1>
 
-<!-- Search filters for each field -->
-<div id="bmiRange" class="mt-5"></div>
-
 <table class="table">
     <thead>
     <tr>
@@ -66,40 +63,4 @@ $(document).ready(function() {
        }
    });
 });
-
-
-
-$(function() {
-
-    let minBMI = parseInt(<?= $min?>);
-    let maxBMI = Math.ceil(<?= $max?>);
-
-    $("#bmiRange").slider({
-        range: true,
-        min: minBMI,
-        max: maxBMI,
-        values: [minBMI, maxBMI],
-        slide: function(event, ui) {
-            $("#bmiRange .ui-slider-handle:eq(0)").html(ui.values[0]);
-            $("#bmiRange .ui-slider-handle:eq(1)").html(ui.values[1]);
-            filterTableByBMIRange(ui.values[0], ui.values[1]);
-        }
-    });
-    // Display initial values on slider handles
-    $("#bmiRange .ui-slider-handle:eq(0)").html($("#bmiRange").slider("values", 0));
-    $("#bmiRange .ui-slider-handle:eq(1)").html($("#bmiRange").slider("values", 1));
-});
-
-// Function to filter the table based on BMI range
-function filterTableByBMIRange(minValue, maxValue) {
-    const tableRows = document.querySelectorAll("table tbody tr");
-    tableRows.forEach((row) => {
-        const bmi = parseFloat(row.querySelector("td:nth-child(3)").textContent);
-        if (bmi >= minValue && bmi <= maxValue) {
-            row.style.display = "";
-        } else {
-            row.style.display = "none";
-        }
-    });
-}
 </script>
