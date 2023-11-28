@@ -10,6 +10,22 @@
 </head>
 <body>
 
+<?php 
+require_once('lib/db.data.php');
+
+$search;
+$data = getAllData();
+
+if (isset($_GET['search'])) {
+    $search = htmlspecialchars($_GET['search']);
+    $data = getFilteredData($_GET['search']);
+    if (empty($data)) {
+        echo '<p class="alert alert-danger">Keine User mit dem Filter "'. $search .'" gefunden.</p>';
+    }
+}
+
+?>
+
 <div class="container">
     <h1 class="mt-5 mb-3">Benutzerdaten anzeigen</h1>
 
@@ -23,7 +39,7 @@
                     id="search"
                     class="form-control"
                     placeholder="suche etwas..."
-                    value="<?= $_GET['search'] ??= ''?>"
+                    value="<?= htmlspecialchars($search ??= '') ?>"
                     required
                 />
             </div>
@@ -48,17 +64,6 @@
             </thead>
             <tbody>
                 <?php
-
-                require_once('lib/db.data.php');
-
-                $data = getAllData();
-
-                if (isset($_GET['search'])) {
-                    $data = getFilteredData($_GET['search']);
-                    if (empty($data)) {
-                        echo '<p class="alert alert-danger">Keine User mit dem Filter "'. $_GET["search"] .'" gefunden.</p>';
-                    }
-                }
 
                 foreach ($data as $d) {
                     echo "<tr>";

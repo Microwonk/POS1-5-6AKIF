@@ -29,6 +29,7 @@
         ];
 
         if (isset($_GET['id']) || isset($_GET['search'])) {
+            $_GET['search'] = htmlspecialchars($_GET['search']);
 
             if (!isset($_GET['id'])) {
                 $user = getFilteredData($_GET['search']);
@@ -38,6 +39,7 @@
                 }
                 $user_id = $user ? $user[0]['id'] : null;
             } else {
+                $_GET['id'] = htmlspecialchars($_GET['id']);
                 $user_id = intval($_GET['id']);
             }
 

@@ -3,7 +3,8 @@ $(document).ready(function() {
     var $searchInput = $('#search');
     var $tableRows = $('table tbody tr');
 
-    $searchInput.on('keyup', function() {
+    // Use the 'input' event instead of 'keyup'
+    $searchInput.on('input', function() {
         var searchText = $(this).val().toLowerCase();
 
         // Loop through the table rows
