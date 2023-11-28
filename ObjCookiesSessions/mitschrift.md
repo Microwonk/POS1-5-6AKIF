@@ -1,0 +1,3 @@
+# Objekte, Cookies und Session Cookies
+
+In PHP können Models dazu verwendet werden, Datenbankzugriffe und Business Logic zu organisieren. Klassen und Objekte ermöglichen die strukturierte Programmierung, wobei Klassen Baupläne für Objekte sind (wichtig ist hier $this-> oder generell -> als instanzvariabeln access. :: als statischer access und die methode __construct, welche mittels dem new Keyword aufgerufen wird). Session-Cookies werden verwendet, um Informationen über mehrere Seitenaufrufe hinweg zu speichern und so die Benutzersitzung aufrechtzuerhalten, erfolgt mittels dem $_SESSION array.
