@@ -1,0 +1,121 @@
+
+:root {
+    --primary: #193C40;
+    --primary_translucent: #193C4055;
+    --secondary: #2E5902;
+    --secondary_translucent: #2E590277;
+    --text: white;
+}
+
+body::-webkit-scrollbar {
+    width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+    background: darkolivegreen;
+    border-radius: 8px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: forestgreen;
+    border-radius: 8px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background: lawngreen;
+}
+
+body {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+    font-family: "72 Monospace", sans-serif;
+    background-color: var(--secondary);
+    color: var(--text);
+    margin: 0;
+    overflow: visible;
+}
+
+header{
+    background-color: var(--secondary);
+    background-image: url('../bilder/headerbackground.jpg');
+    background-size: cover;
+    font-size: 3vw;
+    text-align: center;
+    padding: 1em 0 1em 0;
+    margin: auto;
+}
+
+main {
+    background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%) no-repeat;
+    background-size: cover;
+}
+
+.fenstercontainer {
+    display: flex;
+    align-items: flex-start; 
+    align-content: space-around;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+
+.fenster {
+    box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.3);
+    background-color: rgba(0,0,0,0.4);
+    width: 15%;
+    min-width: 300px;
+    height: auto;
+    backdrop-filter: blur(10px);
+    border-radius: 3em;
+    margin: 1em;
+}
+
+.fenster img {
+    margin: auto;
+    width: 100%;
+    border-radius: 3em;
+}
+
+.fenster a {
+    text-decoration: none;
+}
+
+.fensterhead {
+    font-size: xx-large;
+    font-weight: bolder;
+    text-shadow: 0.1em 0.1em var(--primary);
+    color: var(--text);
+    position: absolute;
+    top: 10%;
+    background-color: var(--primary_translucent);
+    text-align: center;
+    width: 100%;
+    z-index: 1;
+}
+
+.fenstertext {
+    font-size: medium;
+    font-weight: bolder;
+    text-shadow: 0.1em 0.1em var(--primary);
+    color: var(--text);
+    position: absolute;
+    bottom: 15%;
+    background-color: var(--primary_translucent);
+    text-align: center;
+    width: 100%;
+    z-index: 1;
+}
+
+.nummer:hover {
+    border: 1px solid red;
+    display: none;
+}
+
+footer {
+    background-color: #193C40;
+    background-image: url('../bilder/headerbackground.jpg');
+    font-size: larger;
+    background-size: cover;
+    text-align: center;
+    padding: 3em;
+}
