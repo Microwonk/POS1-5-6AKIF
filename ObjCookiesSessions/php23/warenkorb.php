@@ -26,56 +26,60 @@ if (isset($_POST['delete'])) {
 ?>
 <div class="container">
     <div class="row">
-        <div class="col-sm10">
+        <div class="col-sm-3">
+            <a href="index.php" class="btn btn-primary mt-3 mb-3">Zurück</a>
+        </div>
+        <div class="col-sm-3">
             <h1>Einkaufswagen</h1>
         </div>
-        <div class="col-sm-2 card-img-top">
-            <img src="images/shopping_cart.png" width="64" alt="shopping cart">
-        </div>
     </div>
+
     <div class="row">
-            <?php
-            foreach ($items as $item) {
-                foreach ($data as $d) {
-                    $book = new Book($d['id'], $d['title'], $d['price'], $d['stock']);
-                    if ($item->getId() == $book->getId()) { ?>
-                        <div class="row m-3">
-                            <form action="warenkorb.php" method="post">
-                                <input type="hidden" name="itemId" value="<?php echo $item->getId(); ?>">
-                                <h3>
-                                    <?= $book->getTitle() ?>
-                                </h3>
-                                <div class="mt-2">
-                                    <?= $book->getPrice() . "€" ?>
-                                </div>
-                                <div class="mt-2">
-                                    Menge: <?= $item->getCount() ?>
-                                </div>
-                                <button
-                                        type="submit"
-                                        name="delete"
-                                        class="mt-2 btn btn-secondary">
-                                    Entfernen
-                                </button>
-                                <?php
-                                if (!is_null($book->getPrice())) {
-                                    $summe += $book->getPrice() * $item->getCount();
+        <div class="col-sm-9">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Price</th>
+                            <th>Menge</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        foreach ($items as $item) {
+                            foreach ($data as $d) {
+                                $book = new Book($d['id'], $d['title'], $d['price'], $d['stock']);
+                                if ($item->getId() == $book->getId()) { ?>
+                                    <tr>
+                                        <td><?= $book->getTitle() ?></td>
+                                        <td><?= $book->getPrice() . "€" ?></td>
+                                        <td>Menge: <?= $item->getCount() ?></td>
+                                        <td>
+                                            <form action="warenkorb.php" method="post">
+                                                <input type="hidden" name="itemId" value="<?= $item->getId(); ?>">
+                                                <button type="submit" name="delete" class="btn btn-secondary">Entfernen</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                    if (!is_null($book->getPrice())) {
+                                        $summe += $book->getPrice() * $item->getCount();
+                                    }
                                 }
-                                ?>
-                                <div>
-                                    <p style="margin-bottom:0; margin-right:0.5em">
-                                        Summe:
-                                    </p>
-                                    <output>
-                                        <?= $summe . "€" ?>
-                                    </output>
-                                </div>
-                            </form>
-                        </div>
-                    <?php }
-                }
-            }
-            ?>
+                            }
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="sticky-top" style="top: 15px;">
+                    <p class="badge bg-primary m-2 p-2">Summe: <?= $summe ?>€</p>
+                </div>
+        </div>
     </div>
 </div>
 </body>

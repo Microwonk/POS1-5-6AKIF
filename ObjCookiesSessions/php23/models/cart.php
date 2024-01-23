@@ -16,7 +16,15 @@ class Cart {
         $this->selectedBooks = $this->loadItems();
     }
 
+    // adds but also checks if the item is already in the cart
     public function add($item) : void {
+        foreach ($this->selectedBooks as $i) {
+            if ($i->getId() == $item->getId()) {
+                $i->setCount($i->getCount() + $item->getCount());
+                $this->save();
+                return;
+            }
+        }
         $this->selectedBooks[] = $item;
         $this->save();
     }
@@ -48,12 +56,12 @@ class Cart {
     }
 
     public function getSelectedOfItem(int $id) : int {
-        $item = array_filter($this->getSelectedBooks(), fn($v, $k) => $v == $id);
-        var_dump($item);
-        if (count($item) == 0) {
-            return 0;
+        foreach ($this->getSelectedBooks() as $book) {
+            if ($book->getId() == $id) {
+                return $book->getCount();
+            }
         }
-        return 1;
+        return 0;
     }
 
     public function getSelectedBooks() : array {

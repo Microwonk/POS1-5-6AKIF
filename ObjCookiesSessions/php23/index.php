@@ -30,7 +30,6 @@ if (isset($_POST['submit'])) {
 </head>
 <body>
 <div class="container">
-
     <div class="row">
         <h1 class="mt-5 mb-3 col-sm-6">Bücher</h1>
 
@@ -46,53 +45,61 @@ if (isset($_POST['submit'])) {
 
     <?php
     $data = getAllBooks();
-    foreach ($data as $d) {
-        $book = new Book($d['id'], $d['title'], $d['price'], $d['stock']);
-        ?>
-        <form action='index.php' method='post'>
-            <div class='row border-bottom'>
-                <p>
-                    <?= $book->getTitle(); ?>
-                </p>
-                <div class='col-sm-4'>
-                    <?= $book->getPrice(); ?>€
-                </div>
-                <div class='col-sm-2'>
-                    <label>
-                        <select name='count'>
-                            <option value='' hidden>* Menge *</option>
-                            <?php
-                            for ($i = 1; $i <= $book->getStock(); $i++) {
-                                ?>
-                                <option value='<?php echo $i ?>'>
-                                    <?php echo $i ?>
-                                </option>
-                                <?php
-                            }
-                            ?>
-
-                        </select>
-                    </label>
-                </div>
-                <div class='col-md-3'>
-                    <input
-                            type='hidden'
-                            name='id'
-                            value='<?= $book->getId(); ?>'>
-                    <button
-                            class='btn btn-secondary'
-                            type='submit'
-                            name='submit'
-                            value="submit">
-                        Hinzufügen
-                    </button>
-                </div>
-            </div>
-        </form>
-        <?php
-    }
     ?>
-</div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Preis</th>
+                <th>Menge</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            foreach ($data as $d) {
+                $book = new Book($d['id'], $d['title'], $d['price'], $d['stock']);
+            ?>
+                <tr>
+                    <td><?= $book->getTitle(); ?></td>
+                    <td><?= $book->getPrice(); ?>€</td>
+                    <td>
+                        <form action='index.php' method='post'>
+                        <?php
+                            $stockLeft = $book->getStock() - $cart->getSelectedOfItem($book->getId());
+                            if ($stockLeft != 0) {
+                                echo "<label for='count'>Menge:</label>";
+                                echo "<select id='count' name='count'>";
+                                
+                                for ($i = 0; $i < $stockLeft; $i++) {
+                                    echo '<option value=' . ($i + 1) . '>' . ($i + 1) . '</option>';
+                                }
+                                echo "</select>";
+                            } else {
+                                echo "<p>Kein Bestand mehr vorhanden</p>";
+                            }
+                        ?>
 
+                    </td>
+                    <td>
+                    <?php
+                    if ($stockLeft != 0) {
+                    ?>
+                        <input type='hidden' name='id' value='<?= $book->getId(); ?>'>
+                        <button class='btn btn-secondary' type='submit' name='submit' value="submit">
+                            Hinzufügen
+                        </button>
+                    <?php 
+                    } 
+                    ?>
+                        </form>
+                    </td>
+                </tr>
+            <?php
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
