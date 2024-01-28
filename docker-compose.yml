@@ -1,0 +1,60 @@
+version: '3'
+
+services:
+  
+# Database
+  mysql:
+    image: mysql
+    command: mysqld --default-authentication-plugin=mysql_native_password
+    container_name: mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: "123"
+      MYSQL_ROOT_HOST: "%"
+    ports:
+      - 3306:3306  
+
+# Apache
+  apache:
+    image: thecodingmachine/php:8.0.14-v4-apache-node10
+    #container_name: apache
+    restart: unless-stopped
+    ports:
+      - 8083:80
+    environment:
+            PHP_EXTENSION_PGSQL: 1
+            PHP_EXTENSION_XDEBUG: 1
+            PHP_EXTENSION_MONGODB: 1
+            PHP_EXTENSION_MONGO: 1
+            APACHE_EXTENSION_AUTOINDEX: 1
+    volumes:
+      - ./www:/var/www/html
+
+# Frontend
+  phpmyadmin:
+    image: bitnami/phpmyadmin:latest
+    container_name: phpmyadmin
+    environment:
+      DATABASE_HOST: "mysql"
+      PHPMYADMIN_ALLOW_ARBITRARY_SERVER: "true"
+      DATABASE_PORT_NUMBER: "3306"
+    restart: unless-stopped
+    ports:
+      - 8082:8080
+
+  mysql-cron-backup:
+    image: fradelg/mysql-cron-backup
+    container_name: mysql-backup
+    depends_on:
+      - mysql
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_PASS=123
+      - MAX_BACKUPS=15
+      - INIT_BACKUP=0
+      # backup every 10 minute
+      - CRON_TIME=*/10 * * * *
+    volumes:
+      - ./database-backup:/backup
+    restart: unless-stopped
