@@ -6,7 +6,7 @@ class Cart {
     private int $itemsCount;
 
     // singleton pattern
-    private static Cart $INSTANCE;
+    private static $INSTANCE;
     public static function get() : Cart {
         if (is_null(self::$INSTANCE)) {
             self::$INSTANCE = new Cart();
@@ -33,15 +33,16 @@ class Cart {
         $this->save();
     }
 
-    public function remove(Item $item) : bool {
-        foreach ($this->selectedBooks as $i => $book) {
-            if ($book['id'] == $item->getId()) {
-                unset($this->selectedBooks[$i]);
-                $this->save();
-                return true;
+    function remove($id) : void {
+        $cartCopy = $this->selectedBooks; 
+        // filter out the item with the given id
+        foreach ($cartCopy as $key => $d) {
+            if ($d->getId() == $id) {
+                unset($cartCopy[$key]);
             }
         }
-        return false;
+        $this->selectedBooks = $cartCopy;
+        $this->save();
     }
 
     public function getSelectedOfItem(int $id) : int {
