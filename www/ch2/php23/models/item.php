@@ -28,4 +28,8 @@ class Item {
     public function setCount(int $count): void {
         $this->count = $count;
     }
+
+    public function addCount(int $count): void {
+        $this->count += $count;
+    }
 }

@@ -20,8 +20,8 @@ $data = getAllBooks();
 $summe = 0;
 
 if (isset($_POST['delete'])) {
-    $cart->deleteItemFromCart($_POST['itemId']);
-    header("Location: warenkorb.php");
+    $cart->remove($_POST['itemId']);
+    header("refresh:0");
 }
 ?>
 <div class="container">
