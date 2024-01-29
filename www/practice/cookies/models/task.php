@@ -1,5 +1,8 @@
 <?php
 
+/// simple Task klasse, die einen Titel, 
+/// eine Beschreibung, einen Completion 
+/// Status und eine ID hat (plus getter setter)
 class Task {
     private string $title;
     private string $description;
@@ -54,3 +57,9 @@ class Completion {
         ];
     }
 }
+
+// wuerde dann so aussehen:
+// enum Completion {
+//     Complete,
+//     Incomplete,
+// }
