@@ -56,7 +56,7 @@ class TaskList {
         }
     }
 
-    /// speichert die tasks in einem cookie mittels
+    /// complete einen task und speichert die tasks im cookie
     public function completeTask(string $id): void {
         // iterate over tasks and find the one with the given id
         foreach ($this->tasks as $index => $task) {

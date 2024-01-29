@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$userHasVoted) {
     foreach ($questions as $question) {
         $questionId = $question->getId();
         if (isset($_POST["question{$questionId}"])) {
-            // wird im pose gesetzt, kann man dann weiter verwenden.
+            // wird im post gesetzt, kann man dann weiter verwenden.
             // ist out of scope fuer dieses simple beispiel.
             $selectedOptionId = $_POST["question{$questionId}"];
             // user hat abgestimmt
