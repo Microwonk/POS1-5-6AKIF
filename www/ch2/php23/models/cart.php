@@ -2,6 +2,8 @@
 
 class Cart {
 
+    private const CART_COOKIE_NAME = 'cart';
+
     private array $selectedBooks;
     private int $itemsCount;
 
@@ -59,15 +61,15 @@ class Cart {
     }
 
     public function save() : void {
-        setcookie('cart', serialize($this->selectedBooks), time() + (86400 * 30), "/");
+        setcookie(self::CART_COOKIE_NAME, serialize($this->selectedBooks), time() + (86400 * 30), "/");
         $this->setItemsCount();
     }
 
     public function loadItems() : array {
-        if (!isset($_COOKIE['cart'])) {
+        if (!isset($_COOKIE[self::CART_COOKIE_NAME])) {
             return [];
         }
-        return unserialize($_COOKIE['cart']);
+        return unserialize($_COOKIE[self::CART_COOKIE_NAME]);
     }
 
     public function setItemsCount() : void {
