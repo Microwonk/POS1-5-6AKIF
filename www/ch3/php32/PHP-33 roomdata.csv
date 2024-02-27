@@ -1,0 +1,11 @@
+nr,name,personen,preis,balkon
+01,Tres-Zap,4,"€53,72",FALSE
+02,Pannier,2,"€53,72",FALSE
+03,Gembucket,1,"€81,87",TRUE
+04,Konklab,4,"€99,81",FALSE
+05,Zontrax,1,"€77,96",TRUE
+06,Veribet,1,"€85,50",FALSE
+07,Zoolab,1,"€36,51",FALSE
+08,Keylex,3,"€64,09",FALSE
+09,Regrant,2,"€43,35",FALSE
+10,Namfix,3,"€93,03",TRUE
