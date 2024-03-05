@@ -1,5 +1,7 @@
 <?php
 
+use JetBrains\PhpStorm\NoReturn;
+
 class Database
 {
     private static string $dbName = 'php32';
@@ -9,7 +11,7 @@ class Database
 
     private static ?PDO $conn = null;
 
-    private function __construct() {
+    #[NoReturn] private function __construct() {
         exit('Init function is not allowed');
     }
 
@@ -26,8 +28,7 @@ class Database
         return self::$conn;
     }
 
-    public static function disconnect(): void
-    {
+    public static function disconnect(): void {
         self::$conn = null;
     }
 }

@@ -2,8 +2,11 @@
 
 require_once 'Database.php';
 
-interface DatabaseObject
-{
+interface DatabaseObject {
+
+    public function validate(): bool;
+    public function save(): bool;
+
     /**
      * Creates a new object in the database
      * @return integer ID of the newly created object (lastInsertId)
@@ -35,10 +38,9 @@ interface DatabaseObject
     public static function delete(int $id): void;
 }
 
-trait DatabaseObjectCommons {
+trait DatabaseObjectValidationCommons {
     private array $errors = [];
-    private function validateHelper(string $label, string $key, mixed $value, int $maxLength): bool
-    {
+    private function validateHelperLength(string $label, string $key, mixed $value, int $maxLength): bool {
         if (strlen($value) == 0) {
             $this->errors[$key] = "$label darf nicht leer sein";
             return false;
@@ -48,5 +50,31 @@ trait DatabaseObjectCommons {
         } else {
             return true;
         }
+    }
+
+    private function validateHelperNumeric(string $label, string $key, mixed $value, array $minToMax): bool {
+        if (!is_numeric($value)) {
+            $this->errors[$key] = "$label muss eine Zahl sein";
+            return false;
+        }
+        $min = $minToMax[0];
+        $max = $minToMax[1];
+        if ($value < $min || $value > $max) {
+            $this->errors[$key] = "$label muss zwischen $min und $max liegen";
+            return false;
+        }
+        return true;
+    }
+
+    private function validateHelperEmail(string $label, string $key, mixed $value): bool {
+        if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+            $this->errors[$key] = "$label muss eine gültige E-Mail-Adresse sein";
+            return false;
+        }
+        return true;
+    }
+
+    public function getErrors(): array {
+        return $this->errors;
     }
 }

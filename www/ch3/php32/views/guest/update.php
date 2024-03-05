@@ -16,11 +16,13 @@ if(isset($_POST['submit'])) {
     $guest->setAddress($_POST['address']);
 
     // Perform the update operation
-    if($guest->update()) {
+    if($guest->save()) {
         header("Location: index.php");
         exit(0);
     } else {
-        echo "<div class='alert-danger'>Failed to update guest.</div>";
+        foreach ($guest->getErrors() as $error) {
+            echo "<div class='alert-danger'>$error</div>";
+        }
     }
 }
 
@@ -44,20 +46,20 @@ $guest = Guest::get($id)
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group required">
-                    <label class="control-label">Name *</label>
-                    <input type="text" class="form-control" name="name" maxlength="64" value="<?= $guest->getName() ?>" required>
+                    <label for="name" class="control-label">Name *</label>
+                    <input type="text" class="form-control" name="name" maxlength="64" id="name" value="<?= $guest->getName() ?>" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group required">
-                    <label class="control-label">Email *</label>
-                    <input type="email" class="form-control" name="email" maxlength="128" value="<?= $guest->getEmail() ?>" required>
+                    <label for="email" class="control-label">Email *</label>
+                    <input type="email" class="form-control" name="email" maxlength="128" id="email" value="<?= $guest->getEmail() ?>" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group required">
-                    <label class="control-label">Adresse *</label>
-                    <input type="text" class="form-control" name="address" maxlength="256" value="<?= $guest->getAddress() ?>" required>
+                    <label for="address" class="control-label">Adresse *</label>
+                    <input type="text" class="form-control" name="address" maxlength="256" id="address" value="<?= $guest->getAddress() ?>" required>
                 </div>
             </div>
         </div>

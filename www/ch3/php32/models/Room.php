@@ -2,17 +2,19 @@
 
 require_once 'DatabaseObject.php';
 class Room implements DatabaseObject {
-    private int $nr;
+    private int $nr = 0;
     private string $name;
     private float $preis;
     private bool $balkon;
     private int $personen;
 
     // trait usage
-    use DatabaseObjectCommons;
+    use DatabaseObjectValidationCommons;
 
-    private function validate(): bool {
-        return $this->validateHelper('Name', 'name', $this->name, 32);
+    public function validate(): bool {
+        return $this->validateHelperLength('Name', 'name', $this->name, 32)
+            & $this->validateHelperNumeric('Preis', 'preis', $this->preis, [0, 9999])
+            & $this->validateHelperNumeric('Personen', 'personen', $this->personen, [1, 12]);
     }
 
     public function save(): bool {

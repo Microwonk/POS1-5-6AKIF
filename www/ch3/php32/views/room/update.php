@@ -21,7 +21,9 @@ if(isset($_POST['submit'])) {
         header("Location: index.php");
         exit(0);
     } else {
-        echo "<div class='alert-danger'>Failed to update room.</div>";
+        foreach ($room->getErrors() as $error) {
+            echo "<div class='alert-danger'>$error</div>";
+        }
     }
 }
 
@@ -45,15 +47,15 @@ $room = Room::get($id)
         <div class="row">
             <div class="col-md-2">
                 <div class="form-group required ">
-                    <label class="control-label">Zimmernummer *</label>
+                    <label for="nr" class="control-label">Zimmernummer *</label>
                     <input type="text" class="form-control" id="nr" name="nr" maxlength="4" value="<?= $room->getNr() ?>">
                 </div>
             </div>
             <div class="col-md-1"></div>
             <div class="col-md-4">
                 <div class="form-group required ">
-                    <label class="control-label">Name *</label>
-                    <input type="text" class="form-control" name="name" maxlength="64" value="<?= $room->getName() ?>">
+                    <label for="name" class="control-label">Name *</label>
+                    <input id="name" type="text" class="form-control" name="name" maxlength="64" value="<?= $room->getName() ?>">
                 </div>
             </div>
             <div class="col-md-5"></div>
@@ -62,22 +64,22 @@ $room = Room::get($id)
         <div class="row">
             <div class="col-md-2">
                 <div class="form-group required ">
-                    <label class="control-label">Personen *</label>
-                    <input type="number" class="form-control" name="size" min="1" value="<?= $room->getPersonen() ?>">
+                    <label for="size" class="control-label">Personen *</label>
+                    <input id="size" type="number" class="form-control" name="size" min="1" value="<?= $room->getPersonen() ?>">
                 </div>
             </div>
             <div class="col-md-1"></div>
             <div class="col-md-2">
                 <div class="form-group required ">
-                    <label class="control-label">Preis *</label>
-                    <input type="text" class="form-control" name="price" value="<?= $room->getPreis() ?>">
+                    <label for="price" class="control-label">Preis *</label>
+                    <input id="price" type="text" class="form-control" name="price" value="<?= $room->getPreis() ?>">
                 </div>
             </div>
             <div class="col-md-1"></div>
             <div class="col-md-1">
                 <div class="form-group required ">
-                    <label class="control-label">Balkon *</label>
-                    <input type="checkbox" class="form-control" name="balcony" checked="<?= $room->hasBalkon() ?>">
+                    <label for="balcony" class="control-label">Balkon *</label>
+                    <input id="balcony" type="checkbox" class="form-control" name="balcony" checked="<?= $room->hasBalkon() ?>">
                 </div>
             </div>
             <div class="col-md-5"></div>

@@ -29,11 +29,13 @@ if(isset($_POST['submit'])) {
         $reservation->setGuest($guest);
     }
 
-    if($reservation->create()) {
+    if($reservation->save()) {
         header("Location: index.php");
         exit(0);
     } else {
-        echo "<div class='alert-danger'>Failed to create reservation.</div>";
+        foreach ($reservation->getErrors() as $error) {
+            echo "<div class='alert-danger'>$error</div>";
+        }
     }
 }
 
@@ -49,19 +51,19 @@ $guests = Guest::getAll();
     <form class="form-horizontal" action="create.php" method="post">
 
         <div class="form-group">
-            <label class="control-label">Von *</label>
-            <input type="date" class="form-control" name="from" required>
+            <label for="from" class="control-label">Von *</label>
+            <input type="date" class="form-control" id="from" name="from" required>
         </div>
 
         <div class="form-group">
-            <label class="control-label">Bis *</label>
-            <input type="date" class="form-control" name="to" required>
+            <label for="to" class="control-label">Bis *</label>
+            <input type="date" class="form-control" id="to" name="to" required>
         </div>
 
         <div class="form-group">
-            <label class="control-label">Zimmer *</label>
-            <select class="form-control" name="room_id" required>
-                <option value="">Bitte wählen</option>
+            <label for="room" class="control-label">Zimmer *</label>
+            <select class="form-control" name="room_id" id="room" required>
+                <option value="" hidden>Bitte wählen</option>
                 <?php foreach ($rooms as $room): ?>
                     <option value="<?= $room->getNr(); ?>"><?= $room->getName(); ?></option>
                 <?php endforeach; ?>
@@ -69,9 +71,9 @@ $guests = Guest::getAll();
         </div>
 
         <div class="form-group">
-            <label class="control-label">Gast *</label>
-            <select class="form-control" name="guest_id" required>
-                <option value="">Bitte wählen</option>
+            <label for="guest" class="control-label">Gast *</label>
+            <select class="form-control" name="guest_id" id="guest" required>
+                <option value="" hidden>Bitte wählen</option>
                 <?php foreach ($guests as $guest): ?>
                     <option value="<?= $guest->getId(); ?>"><?= $guest->getName(); ?></option>
                 <?php endforeach; ?>

@@ -11,11 +11,13 @@ if(isset($_POST['submit'])) {
     $room->setBalkon(isset($_POST['balcony']));
     $room->setPersonen($_POST['size']);
 
-    if($room->create()) {
+    if($room->save()) {
         header("Location: index.php");
         exit(0);
     } else {
-        echo "<div class='alert-danger'>Failed to update room.</div>";
+        foreach ($room->getErrors() as $error) {
+            echo "<div class='alert-danger'>$error</div>";
+        }
     }
 }
 ?>
@@ -30,8 +32,8 @@ if(isset($_POST['submit'])) {
             <div class="row">
                 <div class="col-md-2">
                     <div class="form-group required ">
-                        <label class="control-label">Zimmernummer *</label>
-                        <input type="text" class="form-control" name="nr" maxlength="4" value="">
+                        <label for="nr" class="control-label">Zimmernummer *</label>
+                        <input type="text" class="form-control" name="nr" id="nr" maxlength="4" value="">
                     </div>
                 </div>
                 <div class="col-md-1"></div>
@@ -47,22 +49,22 @@ if(isset($_POST['submit'])) {
             <div class="row">
                 <div class="col-md-2">
                     <div class="form-group required ">
-                        <label class="control-label">Personen *</label>
-                        <input type="number" class="form-control" name="size" min="1" value="">
+                        <label for="size" class="control-label">Personen *</label>
+                        <input type="number" class="form-control" id="size" name="size" min="1" value="">
                     </div>
                 </div>
                 <div class="col-md-1"></div>
                 <div class="col-md-2">
                     <div class="form-group required ">
-                        <label class="control-label">Preis *</label>
-                        <input type="text" class="form-control" name="price" value="">
+                        <label for="price" class="control-label">Preis *</label>
+                        <input type="text" class="form-control" id="price" name="price" value="">
                     </div>
                 </div>
                 <div class="col-md-1"></div>
                 <div class="col-md-1">
                     <div class="form-group required ">
-                        <label class="control-label">Balkon *</label>
-                        <input type="checkbox" class="form-control" name="balcony" value="">
+                        <label for="balcony" class="control-label">Balkon *</label>
+                        <input type="checkbox" class="form-control" id="balcony" name="balcony" value="">
                     </div>
                 </div>
                 <div class="col-md-5"></div>

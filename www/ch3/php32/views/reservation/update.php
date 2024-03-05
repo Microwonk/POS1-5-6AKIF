@@ -31,11 +31,13 @@ if (isset($_POST['submit'])) {
     $reservation->setGuestId($_POST['guest_id']);
 
     // Perform the update operation
-    if ($reservation->update()) {
+    if ($reservation->save()) {
         header("Location: index.php");
         exit(0);
     } else {
-        echo "<div class='alert-danger'>Fehler beim Aktualisieren der Reservation.</div>";
+        foreach ($reservation->getErrors() as $error) {
+            echo "<div class='alert-danger'>$error</div>";
+        }
     }
 }
 ?>

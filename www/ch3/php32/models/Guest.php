@@ -3,18 +3,18 @@
 require_once 'DatabaseObject.php';
 
 class Guest implements DatabaseObject {
-    private int $id;
+    private int $id = 0;
     private string $name;
     private string $email;
     private string $address;
 
-    // trait usage
-    use DatabaseObjectCommons;
+    use DatabaseObjectValidationCommons;
 
-    private function validate(): bool {
-        return $this->validateHelper('Name', 'name', $this->name, 32)
-            & $this->validateHelper('Email', 'email', $this->email, 128)
-            & $this->validateHelper('Adresse', 'address', $this->address, 256);
+    public function validate(): bool {
+        return $this->validateHelperLength('Name', 'name', $this->name, 32)
+            & $this->validateHelperLength('Email', 'email', $this->email, 64)
+            & $this->validateHelperEmail('Email', 'email', $this->email)
+            & $this->validateHelperLength('Adresse', 'address', $this->address, 128);
     }
 
     public function save(): bool {

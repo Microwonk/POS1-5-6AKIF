@@ -4,7 +4,7 @@ require_once 'DatabaseObject.php';
 require_once 'Guest.php';
 require_once 'Room.php';
 class Reservation implements DatabaseObject {
-    private int $id;
+    private int $id = 0;
     private string $from;
     private string $to;
     private int $room_id;
@@ -13,11 +13,35 @@ class Reservation implements DatabaseObject {
     private Guest $guest;
 
     // trait usage
-    use DatabaseObjectCommons;
+    use DatabaseObjectValidationCommons;
 
-    private function validate(): bool {
-        // TODO
-        return true;
+    public function validate(): bool {
+        return $this->validateCollisions()
+            & $this->validateHelperLength('Von', 'from', $this->from, 10)
+            & $this->validateHelperLength('Bis', 'to', $this->to, 10)
+            & $this->validateHelperNumeric('Zimmer', 'room_id', $this->room_id, [1, 6969]) // mac zimmer nummer mal auf 6969 gesetzt
+            & $this->room->validate()
+            & $this->guest->validate();
+    }
+
+    // Kollisionserkennung
+    private function recognizeCollisions(): bool {
+        $db = Database::connect();
+        $sql = "SELECT * FROM reservations WHERE room_id = ? AND ((`from` <= ? AND `to` >= ?) OR (`from` <= ? AND `to` >= ?))";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$this->room_id, $this->from, $this->to, $this->from, $this->to]);
+        $collisions = $stmt->fetchAll(PDO::FETCH_CLASS, static::class);
+        Database::disconnect();
+        return count($collisions) == 0;
+    }
+
+    private function validateCollisions(): bool {
+        if (!$this->recognizeCollisions()) {
+            $this->errors['collision'] = "Kollision mit anderer Reservierung";
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public function save(): bool {
@@ -63,11 +87,11 @@ class Reservation implements DatabaseObject {
 
         $item = $item !== false ? $item : null;
 
+        // ORM nicht ganz möglich? -> manuell nachholen
         if (!is_null($item)) {
             $item->setGuest(Guest::get($item->getGuestId()));
             $item->setRoom(Room::get($item->getRoomNr()));
         }
-
         return $item;
     }
 
@@ -79,6 +103,7 @@ class Reservation implements DatabaseObject {
         $items = $stmt->fetchAll(PDO::FETCH_CLASS, static::class);
         Database::disconnect();
 
+        // ORM nicht ganz möglich? -> manuell nachholen
         foreach ($items as $item) {
             $item->setGuest(Guest::get($item->getGuestId()));
             $item->setRoom(Room::get($item->getRoomNr()));
@@ -112,6 +137,9 @@ class Reservation implements DatabaseObject {
         return $this->from;
     }
 
+    /**
+     * @throws Exception
+     */
     public function fromAsDate(): DateTime {
         return new DateTime($this->from);
     }
@@ -120,6 +148,9 @@ class Reservation implements DatabaseObject {
         return $this->to;
     }
 
+    /**
+     * @throws Exception
+     */
     public function toAsDate(): DateTime {
         return new DateTime($this->to);
     }
@@ -140,7 +171,8 @@ class Reservation implements DatabaseObject {
         return $this->guest_id;
     }
 
-    public function setGuestId(int $id) {
+    public function setGuestId(int $id): void
+    {
         $this->guest_id = $id;
     }
 
@@ -158,12 +190,17 @@ class Reservation implements DatabaseObject {
 
     public function setRoom(Room $room): void {
         $this->room = $room;
+        $this->room_id = $room->getNr();
     }
 
     public function setGuest(Guest $guest): void {
         $this->guest = $guest;
+        $this->guest_id = $guest->getId();
     }
 
+    /**
+     * @throws Exception
+     */
     public function getDurationInDays(): int {
         return $this->toAsDate()->diff($this->fromAsDate())->days;
     }
