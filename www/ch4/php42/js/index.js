@@ -91,7 +91,7 @@ const updateChart = (measurements) => {
 
 const getAllMeasurements = async (station_id = 1) => {
     try {
-        const response = await fetch("/ch4/php42/api/station/" + station_id + "/" + "measurement");
+        const response = await fetch("api/station/" + station_id + "/" + "measurement");
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
