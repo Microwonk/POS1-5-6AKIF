@@ -2,22 +2,17 @@
 
 namespace controllers;
 
-use controllers\Controller;
 use models\Station;
-
-require_once('Controller.php');
-require_once('models/Measurement.php');
-require_once('models/Station.php');
 
 class StationController extends Controller
 {
     /**
      * @param $route array, e.g. [station, view]
      */
-    public function handleRequest($route)
+    public function handleRequest(array $route): void
     {
         $operation = sizeof($route) > 1 ? $route[1] : 'index';
-        $id = isset($_GET['id']) ? $_GET['id'] : 0;
+        $id = $_GET['id'] ?? 0;
 
         if ($operation == 'index') {
             $this->actionIndex();
@@ -34,19 +29,19 @@ class StationController extends Controller
         }
     }
 
-    public function actionIndex()
+    public function actionIndex(): void
     {
         $model = Station::getAll();
         $this->render('station/index', $model);
     }
 
-    public function actionView($id)
+    public function actionView($id): void
     {
         $model = Station::get($id);
         $this->render('station/view', $model);
     }
 
-    public function actionCreate()
+    public function actionCreate(): void
     {
         $model = new Station();
 
@@ -64,7 +59,7 @@ class StationController extends Controller
         $this->render('station/create', $model);
     }
 
-    public function actionUpdate($id)
+    public function actionUpdate(int $id): void
     {
         $model = Station::get($id);
 
@@ -82,7 +77,7 @@ class StationController extends Controller
         $this->render('station/update', $model);
     }
 
-    public function actionDelete($id)
+    public function actionDelete(int $id): void
     {
         if (!empty($_POST)) {
             if (Station::delete($id)) {

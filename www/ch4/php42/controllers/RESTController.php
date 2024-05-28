@@ -1,26 +1,29 @@
 <?php
 
 namespace controllers;
+
+use Exception;
+
 abstract class RESTController
 {
     /**
      * Property: method
      * The HTTP method this request was made in, either GET, POST, PUT or DELETE
      */
-    protected $method = '';
+    protected string $method = '';
 
     /**
      * Property: endpoint
      * The Model requested in the URI. eg: /files
      */
-    protected $endpoint = '';
+    protected string $endpoint = '';
 
     /**
      * Property: verb
      * An optional additional descriptor about the endpoint, used for things that can
      * not be handled by the basic methods. eg: /files/process
      */
-    protected $verb = '';
+    protected string $verb = '';
 
     /**
      * Property: args
@@ -28,17 +31,18 @@ abstract class RESTController
      * case, an integer ID for the resource. eg: /<endpoint>/<verb>/<arg0>/<arg1>
      * or /<endpoint>/<arg0>
      */
-    protected $args = array();
+    protected array $args = [];
 
     /**
      * Property: file
      * Stores the input of the PUT request
      */
-    protected $file = Null;
+    protected ?string $file = null;
 
     /**
      * Constructor: __construct
      * Allow for CORS, assemble and pre-process the data
+     * @throws Exception
      */
     public function __construct()
     {
@@ -75,15 +79,12 @@ abstract class RESTController
         //
         switch ($this->method) {
             case 'DELETE':
+            case 'PUT':
             case 'POST':
                 //Gets body from Clients request as JSON
                 $this->file = json_decode(file_get_contents("php://input"), true);
                 break;
             case 'GET':
-                break;
-            case 'PUT':
-                //Gets body from Clients request as JSON
-                $this->file = json_decode(file_get_contents("php://input"), true);
                 break;
             default:
                 throw new Exception('Method Not Allowed', 405);
@@ -95,26 +96,27 @@ abstract class RESTController
      * @param $field
      * @return mixed|null
      */
-    protected function getDataOrNull($field)
+    protected function getDataOrNull($field): mixed
     {
-        return isset($this->file[$field]) ? $this->file[$field] : null;
+        return $this->file[$field] ?? null;
     }
 
     public abstract function handleRequest();
 
-    protected function response($data, $status = 200)
+    protected function response($data, $status = 200): void
     {
         RESTController::responseHelper($data, $status);
     }
 
-    public static function responseHelper($data, $status)
+
+    public static function responseHelper($data, $status): void
     {
         header("HTTP/1.1 " . $status . " " . RESTController::requestStatus($status));
         echo json_encode($data);
     }
 
 
-    private static function requestStatus($code)
+    private static function requestStatus($code): string
     {
         $status = array(
             200 => 'OK',

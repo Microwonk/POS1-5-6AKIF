@@ -2,22 +2,20 @@
 
 namespace models;
 
-use models\Database;
-use models\DatabaseObject;
-
-require_once("DatabaseObject.php");
+use Exception;
+use JsonSerializable;
+use PDO;
 
 class Station implements DatabaseObject, JsonSerializable
 {
-    private $id;
-    private $name;
-    private $altitude;
-    private $location;
+    private int $id;
+    private string $name;
+    private float $altitude;
+    private string $location;
 
-    private $errors = [];
+    private array $errors = [];
 
-    public function validate()
-    {
+    public function validate() : bool {
         return $this->validateName() & $this->validateAltitude() & $this->validateLocation();
     }
 
@@ -25,7 +23,7 @@ class Station implements DatabaseObject, JsonSerializable
      * create or update an object
      * @return boolean true on success
      */
-    public function save()
+    public function save(): bool
     {
         if ($this->validate()) {
             if ($this->id != null && $this->id > 0) {
@@ -44,8 +42,7 @@ class Station implements DatabaseObject, JsonSerializable
      * Creates a new object in the database
      * @return integer ID of the newly created object (lastInsertId)
      */
-    public function create()
-    {
+    public function create(): int {
         $db = Database::connect();
         $sql = "INSERT INTO station (name, altitude, location) values(?, ?, ?)";
         $stmt = $db->prepare($sql);
@@ -58,27 +55,21 @@ class Station implements DatabaseObject, JsonSerializable
     /**
      * Saves the object to the database
      */
-    public function update()
-    {
+    public function update(): bool {
         $db = Database::connect();
         $sql = "UPDATE station set name = ?, altitude = ?, location = ? WHERE id = ?";
         $stmt = $db->prepare($sql);
-        $stmt->execute(array($this->name, $this->altitude, $this->location, $this->id));
+        $ret = $stmt->execute(array($this->name, $this->altitude, $this->location, $this->id));
         Database::disconnect();
+        return $ret;
     }
 
-    /**
-     * Get an object from database
-     * @param integer $id
-     * @return object single object or null
-     */
-    public static function get($id)
-    {
+    public static function get(int $id) : ?static {
         $db = Database::connect();
         $sql = "SELECT * FROM station where id = ?";
         $stmt = $db->prepare($sql);
         $stmt->execute(array($id));
-        $item = $stmt->fetchObject('Station');
+        $item = $stmt->fetchObject(static::class);
         Database::disconnect();
         return $item !== false ? $item : null;
     }
@@ -87,8 +78,7 @@ class Station implements DatabaseObject, JsonSerializable
      * Get an array of objects from database
      * @return array array of objects or empty array
      */
-    public static function getAll()
-    {
+    public static function getAll(): array {
         $db = Database::connect();
 
         $sql = "SELECT * FROM station ORDER BY name ASC";
@@ -97,7 +87,7 @@ class Station implements DatabaseObject, JsonSerializable
         $stmt->execute();
 
         // fetch all datasets (rows), convert to array of Credentials-objects (ORM)
-        $items = $stmt->fetchAll(PDO::FETCH_CLASS, 'Station');
+        $items = $stmt->fetchAll(PDO::FETCH_CLASS, static::class);
 
         Database::disconnect();
         return $items;
@@ -108,8 +98,7 @@ class Station implements DatabaseObject, JsonSerializable
      * @param integer $id
      * @return bool true on success
      */
-    public static function delete($id)
-    {
+    public static function delete($id): bool {
         try {
             $db = Database::connect();
             $sql = "DELETE FROM station WHERE id = ?";
@@ -137,10 +126,9 @@ class Station implements DatabaseObject, JsonSerializable
         }
     }
 
-    private function validateAltitude()
-    {
+    private function validateAltitude(): bool {
         if (!is_numeric($this->altitude) || $this->altitude < 0 || $this->altitude > 4000) {
-            $this->errors['altitude'] = "Höhe ungueltig";
+            $this->errors['altitude'] = "Höhe ungültig";
             return false;
         } else {
             unset($this->errors['altitude']);
@@ -148,8 +136,7 @@ class Station implements DatabaseObject, JsonSerializable
         }
     }
 
-    private function validateLocation()
-    {
+    private function validateLocation(): bool {
         if ($this->location == '') {
             $this->errors['location'] = "Ort darf nicht leer sein";
             return false;
@@ -162,101 +149,66 @@ class Station implements DatabaseObject, JsonSerializable
         }
     }
 
-    /**
-     * @return boolean
-     */
-    public function hasError($field)
-    {
+    public function hasError($field): bool {
         return !empty($this->errors[$field]);
     }
 
     /**
      * @return array
      */
-    public function getError($field)
-    {
+    public function getError($field): array {
         return $this->errors[$field];
     }
 
-    public function jsonSerialize()
-    {
-        //return get_object_vars($this);
+    public function jsonSerialize(): array {
         return [
-            "id" => intval($this->id),
+            "id" => $this->id,
             "name" => $this->name,
             "altitude" => intval($this->altitude),
             "location" => $this->location,
         ];
     }
 
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
+    public function getId() : int {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param mixed $name
-     */
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAltitude()
+    public function getAltitude(): float
     {
         return $this->altitude;
     }
 
-    /**
-     * @param mixed $altitude
-     */
-    public function setAltitude($altitude)
+    public function setAltitude($altitude): void
     {
         $this->altitude = $altitude;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getLocation()
+    public function getLocation(): string
     {
         return $this->location;
     }
 
-    /**
-     * @param mixed $location
-     */
-    public function setLocation($location)
+    public function setLocation($location): void
     {
         $this->location = $location;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }

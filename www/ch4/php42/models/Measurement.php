@@ -1,26 +1,26 @@
 <?php
-
 namespace models;
 
+use DateTime;
+use Exception;
+use JsonSerializable;
 use models\Database;
 use models\DatabaseObject;
 use models\Station;
-
-require_once("DatabaseObject.php");
-require_once("Station.php");
+use PDO;
 
 class Measurement implements DatabaseObject, JsonSerializable
 {
-    private $id;
-    private $time;
-    private $temperature;
-    private $rain;
-    private $station_id;   // ID of station
-    private $station;      // ORM of station
+    private int $id;
+    private string $time;
+    private float $temperature;
+    private float $rain;
+    private int $station_id;   // ID of station
+    private ?Station $station = null;      // ORM of station
 
-    private $errors = [];
+    private array $errors = [];
 
-    public function validate()
+    public function validate(): bool
     {
         return $this->validateTime() & $this->validateTemperature() & $this->validateRain() & $this->validateStationId();
     }
@@ -29,7 +29,7 @@ class Measurement implements DatabaseObject, JsonSerializable
      * create or update an object
      * @return boolean true on success
      */
-    public function save()
+    public function save(): bool
     {
         if ($this->validate()) {
             if ($this->id != null && $this->id > 0) {
@@ -48,7 +48,7 @@ class Measurement implements DatabaseObject, JsonSerializable
      * Creates a new object in the database
      * @return integer ID of the newly created object (lastInsertId)
      */
-    public function create()
+    public function create(): int
     {
         $db = Database::connect();
         $sql = "INSERT INTO measurement (time, temperature, rain, station_id) values(?, ?, ?, ?)";
@@ -62,21 +62,17 @@ class Measurement implements DatabaseObject, JsonSerializable
     /**
      * Saves the object to the database
      */
-    public function update()
+    public function update(): bool
     {
         $db = Database::connect();
         $sql = "UPDATE measurement set time = ?, temperature = ?, rain = ?, station_id = ? WHERE id = ?";
         $stmt = $db->prepare($sql);
-        $stmt->execute(array($this->time, $this->temperature, $this->rain, $this->station_id, $this->id));
+        $ret = $stmt->execute(array($this->time, $this->temperature, $this->rain, $this->station_id, $this->id));
         Database::disconnect();
+        return $ret;
     }
 
-    /**
-     * Get an object from database
-     * @param integer $id
-     * @return object single object or null
-     */
-    public static function get($id)
+    public static function get($id): ?static
     {
         $db = Database::connect();
         $sql = "SELECT m.*, s.id, s.name, s.altitude, s.location
@@ -105,7 +101,7 @@ class Measurement implements DatabaseObject, JsonSerializable
         }
     }
 
-    public static function getAll()
+    public static function getAll(): array
     {
         $db = Database::connect();
 
@@ -113,7 +109,7 @@ class Measurement implements DatabaseObject, JsonSerializable
 
         $stmt = $db->prepare($sql);
         $stmt->execute();
-        $items = $stmt->fetchAll(PDO::FETCH_CLASS, 'Measurement');
+        $items = $stmt->fetchAll(PDO::FETCH_CLASS, static::class);
         Database::disconnect();
 
         return $items;
@@ -124,34 +120,31 @@ class Measurement implements DatabaseObject, JsonSerializable
      * @param int $station_id
      * @return array array of objects or empty array
      */
-    public static function getAllByStation($station_id)
+    public static function getAllByStation(int $station_id): array
     {
         $measurements = [];
         $db = Database::connect();
 
-        $sql = "SELECT * FROM measurement WHERE station_id = ? ORDER BY time ASC LIMIT 96";
+        $sql = "SELECT * FROM measurement WHERE station_id = ?";
 
         $stmt = $db->prepare($sql);
         $stmt->execute([$station_id]);
-        $items = $stmt->fetchAll(PDO::FETCH_CLASS, 'Measurement');
+        $items = $stmt->fetchAll(PDO::FETCH_CLASS, static::class);
         Database::disconnect();
         return $items;
     }
 
-    /**
-     * Deletes the object from the database
-     * @param integer $id
-     */
-    public static function delete($id)
+    public static function delete(int $id): bool
     {
         $db = Database::connect();
         $sql = "DELETE FROM measurement WHERE id = ?";
         $stmt = $db->prepare($sql);
-        $stmt->execute(array($id));
+        $ret = $stmt->execute(array($id));
         Database::disconnect();
+        return $ret;
     }
 
-    private function validateTime()
+    private function validateTime(): bool
     {
         try {
             if ($this->time == '') {
@@ -170,9 +163,9 @@ class Measurement implements DatabaseObject, JsonSerializable
         }
     }
 
-    private function validateTemperature()
+    private function validateTemperature(): bool
     {
-        if ((!is_numeric($this->temperature) && !is_double($this->temperature)) || $this->temperature < -50 || $this->temperature > 150) {
+        if ($this->temperature < -50 || $this->temperature > 150) {
             $this->errors['temperature'] = "Temperatur ungueltig";
             return false;
         } else {
@@ -181,9 +174,9 @@ class Measurement implements DatabaseObject, JsonSerializable
         }
     }
 
-    private function validateRain()
+    private function validateRain(): bool
     {
-        if ((!is_numeric($this->rain) && !is_double($this->rain)) || $this->rain < 0 || $this->rain > 10000) {
+        if ($this->rain < 0 || $this->rain > 10000) {
             $this->errors['rain'] = "Regenmenge ungueltig";
             return false;
         } else {
@@ -192,7 +185,7 @@ class Measurement implements DatabaseObject, JsonSerializable
         }
     }
 
-    private function validateStationId()
+    private function validateStationId(): bool
     {
         if (!is_numeric($this->station_id) && $this->station_id <= 0) {
             $this->errors['station_id'] = "StationID ungueltig";
@@ -203,18 +196,12 @@ class Measurement implements DatabaseObject, JsonSerializable
         }
     }
 
-    /**
-     * @return boolean
-     */
-    public function hasError($field)
+    public function hasError($field): bool
     {
         return !empty($this->errors[$field]);
     }
 
-    /**
-     * @return array
-     */
-    public function getError($field)
+    public function getError($field): array
     {
         return $this->errors[$field];
     }
@@ -228,7 +215,7 @@ class Measurement implements DatabaseObject, JsonSerializable
             "rain" => round(doubleval($this->rain), 2),
         ];
 
-        if ($this->station_id != null && is_numeric($this->station_id)) {
+        if ($this->station_id != null) {
             $data['station_id'] = intval($this->station_id);      // include id
         }
 
@@ -239,58 +226,37 @@ class Measurement implements DatabaseObject, JsonSerializable
         return $data;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getTime()
+    public function getTime(): string
     {
         return $this->time;
     }
 
-    /**
-     * @param mixed $time
-     */
-    public function setTime($time)
+    public function setTime(string $time): void
     {
         $this->time = $time;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getTemperature()
+    public function getTemperature(): mixed
     {
         return $this->temperature;
     }
 
-    /**
-     * @param mixed $temperature
-     */
-    public function setTemperature($temperature)
+    public function setTemperature(float $temperature): void
     {
         $this->temperature = $temperature;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getRain()
+    public function getRain(): float
     {
         return $this->rain;
     }
@@ -298,47 +264,33 @@ class Measurement implements DatabaseObject, JsonSerializable
     /**
      * @param mixed $rain
      */
-    public function setRain($rain)
+    public function setRain(mixed $rain): void
     {
         $this->rain = $rain;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getStationId()
+    public function getStationId(): int
     {
         return $this->station_id;
     }
 
-    /**
-     * @param mixed $station_id
-     */
-    public function setStationId($station_id)
+    public function setStationId(int $station_id): void
     {
         $this->station_id = $station_id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getStation()
+
+    public function getStation(): ?Station
     {
         return $this->station;
     }
 
-    /**
-     * @param mixed $station
-     */
-    public function setStation($station)
+    public function setStation(Station $station): void
     {
         $this->station = $station;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }

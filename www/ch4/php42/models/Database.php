@@ -2,22 +2,24 @@
 
 namespace models;
 
+use JetBrains\PhpStorm\NoReturn;
+use PDO;
+use PDOException;
+
 class Database
 {
-    private static $dbName = 'php42';
-    private static $dbHost = 'localhost';
-    private static $dbUsername = 'root';
-    private static $dbUserPassword = '';
+    private static string $dbName = 'php42';
+    private static string $dbHost = 'mysql';
+    private static string $dbUsername = 'root';
+    private static string $dbUserPassword = '123';
 
-    private static $conn = null;
+    private static ?PDO $conn = null;
 
-    public function __construct()
-    {
+    #[NoReturn] public function __construct() {
         exit('Init function is not allowed');
     }
 
-    public static function connect()
-    {
+    public static function connect() {
         // One connection through whole application
         if (null == self::$conn) {
             try {
@@ -30,10 +32,7 @@ class Database
         return self::$conn;
     }
 
-    public static function disconnect()
-    {
+    public static function disconnect(): void {
         self::$conn = null;
     }
 }
-
-?>

@@ -3,19 +3,19 @@
 namespace controllers;
 abstract class Controller
 {
-    public function render($view, $model = null)
+    public function render(string $view, $model = null): void
     {
         include 'views/layouts/top.php';
         include 'views/' . $view . '.php';
         include 'views/layouts/bottom.php';
     }
 
-    protected function redirect($location)
+    protected function redirect(string $location): void
     {
         header('Location: index.php?r=' . $location);
     }
 
-    public static function showError($title, $message)
+    public static function showError($title, $message): void
     {
         include 'views/error.php';
     }
@@ -25,9 +25,9 @@ abstract class Controller
      * @param $field
      * @return mixed|null
      */
-    protected function getDataOrNull($field)
+    protected function getDataOrNull($field): mixed
     {
-        return isset($_POST[$field]) ? $_POST[$field] : null;
+        return $_POST[$field] ?? null;
     }
 
 }

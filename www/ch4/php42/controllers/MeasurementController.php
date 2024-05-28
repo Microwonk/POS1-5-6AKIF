@@ -6,19 +6,15 @@ use controllers\Controller;
 use models\Measurement;
 use models\Station;
 
-require_once('Controller.php');
-require_once('models/Station.php');
-require_once('models/Measurement.php');
-
 class MeasurementController extends Controller
 {
     /**
      * @param $route array, e.g. [measurement, view]
      */
-    public function handleRequest($route)
+    public function handleRequest(array $route): void
     {
         $operation = sizeof($route) > 1 ? $route[1] : 'index';
-        $id = isset($_GET['id']) ? $_GET['id'] : 0;
+        $id = $_GET['id'] ?? 0;
         if ($operation == 'view') {
             $this->actionView($id);
         } elseif ($operation == 'update') {
@@ -30,13 +26,13 @@ class MeasurementController extends Controller
         }
     }
 
-    public function actionView($id)
+    public function actionView(int $id): void
     {
         $model = Measurement::get($id);
         $this->render('measurement/view', $model);
     }
 
-    public function actionUpdate($id)
+    public function actionUpdate(int $id): void
     {
         $stations = Station::getAll();
 
@@ -57,7 +53,7 @@ class MeasurementController extends Controller
         $this->render('measurement/update', ['model' => $model, 'stations' => $stations]);
     }
 
-    public function actionDelete($id)
+    public function actionDelete(int $id): void
     {
         if (!empty($_POST)) {
             Measurement::delete($id);
