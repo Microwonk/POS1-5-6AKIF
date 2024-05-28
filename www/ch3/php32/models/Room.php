@@ -1,5 +1,8 @@
 <?php
 
+use models\Database;
+use models\DatabaseObject;
+
 require_once 'DatabaseObject.php';
 class Room implements DatabaseObject {
     private int $nr = 0;
