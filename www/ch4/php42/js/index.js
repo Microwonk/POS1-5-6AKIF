@@ -3,7 +3,8 @@ $(document).ready(function () {
     // filtern der Messwerte im Frontend mittels JQuery.
     $("#filterMesswerte").on("keyup", function () {
         const value = $(this).val();
-        $("#measurements tr").filter(function () {
+        console.debug(value);
+        $("#measurements tr").filter(function() {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
@@ -11,7 +12,7 @@ $(document).ready(function () {
     const station = $('#station_id');
 
     $('#btnMesswerteClear').click(function () {
-        document.getElementById('filter').value = '';
+        $('#filter').val('');
         getAllMeasurements(station.val());
     });
 
@@ -36,19 +37,20 @@ $(document).ready(function () {
             labels: ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"],
             datasets: [
                 {
-                    label: "Regen [mm]",
-                    data: [1, 2, 1, 0, 3, 1, 2], // Beispielwerte, diese werden durch die tatsächlichen Werte ersetzt
-                    borderColor: 'rgb(54, 162, 235)',
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    label: "Temperatur [°C]",
+                    data: [14, 17, 17, 18, 16, 13, 14],
+                    borderColor: 'rgb(255, 192, 192)',
+                    backgroundColor: 'rgb(255, 192, 192, 0.2)',
                     borderWidth: 1,
                     pointRadius: 0,
                     fill: false,
                     tension: 0
-                }, {
-                    label: "Temperatur [°C]",
-                    data: [14, 17, 17, 18, 16, 13, 14],
+                },
+                {
+                    label: "Regen [mm]",
+                    data: [1, 2, 1, 0, 3, 1, 2], // Beispielwerte, diese werden durch die tatsächlichen Werte ersetzt
                     borderColor: 'rgb(75, 192, 192)',
-                    backgroundColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgb(75, 192, 192, 0.2)',
                     borderWidth: 1,
                     pointRadius: 0,
                     fill: false,
@@ -89,7 +91,7 @@ const updateChart = (measurements) => {
 
 const getAllMeasurements = async (station_id = 1) => {
     try {
-        const response = await fetch("api/station/" + station_id + "/" + "measurement");
+        const response = await fetch("/ch4/php42/api/station/" + station_id + "/" + "measurement");
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -110,9 +112,9 @@ const parseMeasurementsTable = (data) => {
         ret += "<td>" + measurement.temperature + "</td>";
         ret += "<td>" + measurement.rain + "</td>";
         ret += "<td>";
-        ret += '<a class="btn btn-info" href="index.php/measurement/view/id=' + measurement.id + '"><span class="glyphicon glyphicon-eye-open"></span></a>&nbsp;'
-        ret += '<a class="btn btn-primary" href="index.php/measurement/update/id=' + measurement.id + '"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp;'
-        ret += '<a class="btn btn-danger" href="index.php/measurement/delete/id=' + measurement.id + '"><span class="glyphicon glyphicon-remove"></span></a>';
+        ret += '<a class="btn btn-info" href="index.php?r=measurement/view&id=' + measurement.id + '"><span class="glyphicon glyphicon-eye-open"></span></a>&nbsp;'
+        ret += '<a class="btn btn-primary" href="index.php?r=measurement/update&id=' + measurement.id + '"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp;'
+        ret += '<a class="btn btn-danger" href="index.php?r=measurement/delete&id=' + measurement.id + '"><span class="glyphicon glyphicon-remove"></span></a>';
         ret += "</td>";
         ret += "</tr>";
     });

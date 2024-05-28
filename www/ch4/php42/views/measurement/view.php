@@ -19,7 +19,7 @@
             </tr>
             <tr>
                 <th>Regenmenge</th>
-                <td><?= $model->getRain() ?> ml</td>
+                <td><?= $model->getRain() ?> mm</td>
             </tr>
             <tr>
                 <th>Station</th>

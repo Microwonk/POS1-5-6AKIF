@@ -1,5 +1,5 @@
 <?php
-
+// like autoload
 require_once 'controllers/Controller.php';
 require_once 'controllers/RESTController.php';
 require_once 'controllers/HomeController.php';

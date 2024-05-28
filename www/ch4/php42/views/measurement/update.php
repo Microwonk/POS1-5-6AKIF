@@ -37,7 +37,7 @@ $model = $model['model'];
             <div class="col-md-1"></div>
             <div class="col-md-2">
                 <div class="form-group required <?= $model->hasError('rain') ? 'has-error' : ''; ?>">
-                    <label class="control-label">Regenmenge [ml] *</label>
+                    <label class="control-label">Regenmenge [mm] *</label>
                     <input type="text" class="form-control" name="rain" value="<?= $model->getRain() ?>">
 
                     <?php if (!empty($model->errors['rain'])): ?>
