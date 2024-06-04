@@ -17,7 +17,6 @@ abstract class Controller
 
     public static function showError($title, $message): void
     {
-        include 'views/error.php';
     }
 
     /**
