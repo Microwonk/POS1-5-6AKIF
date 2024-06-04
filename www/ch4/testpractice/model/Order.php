@@ -2,9 +2,9 @@
 
 namespace model;
 
-class Order implements DatabaseObject
+class Order extends DatabaseCommons implements DatabaseObject
 {
-    private int $orderId;
+    private int $orderID = 0;
     private string $orderDate;
     private float $amount;
     private int $customerId;
@@ -13,37 +13,44 @@ class Order implements DatabaseObject
 
     public function create(): int
     {
-        // TODO: Implement create() method.
+        return self::createHelper("Orders");
     }
 
     public function update(): bool
     {
-        // TODO: Implement update() method.
+        return self::updateHelper("Orders", "orderID");
     }
 
     public static function get(int $id): ?static
     {
-        // TODO: Implement get() method.
+        $ret = self::getHelper("Orders", $id, "orderID");
+        $ret->setCustomer(Customer::get($ret->getCustomerId()));
+        return $ret;
     }
 
     public static function getAll(): array
     {
-        // TODO: Implement getAll() method.
+        $arr = self::getAllHelper("Orders");
+
+        foreach ($arr as $order) {
+            $order->setCustomer(Customer::get($order->getCustomerId()));
+        }
+        return $arr;
     }
 
     public static function delete(int $id): bool
     {
-        // TODO: Implement delete() method.
+        return self::deleteHelper("Orders", "orderID", $id);
     }
 
-    public function getOrderId(): int
+    public function getOrderID(): int
     {
-        return $this->orderId;
+        return $this->orderID;
     }
 
-    public function setOrderId(int $orderId): void
+    public function setOrderID(int $orderID): void
     {
-        $this->orderId = $orderId;
+        $this->orderID = $orderID;
     }
 
     public function getOrderDate(): string
