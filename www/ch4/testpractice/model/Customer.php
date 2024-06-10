@@ -2,7 +2,9 @@
 
 namespace model;
 
-class Customer extends DatabaseCommons implements DatabaseObject
+use JsonSerializable;
+
+class Customer extends DatabaseCommons implements DatabaseObject, JsonSerializable
 {
     private int $CustomerID = 0;
     private string $FirstName;
@@ -72,5 +74,15 @@ class Customer extends DatabaseCommons implements DatabaseObject
     public function setEmail(string $Email): void
     {
         $this->Email = $Email;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'CustomerID' => $this->CustomerID,
+            'FirstName' => $this->FirstName,
+            'LastName' => $this->LastName,
+            'Email' => $this->Email,
+        ];
     }
 }

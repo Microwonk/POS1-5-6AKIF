@@ -14,8 +14,13 @@ abstract class DatabaseCommons
 
         foreach ($reflection->getProperties() as $property) {
             $property->setAccessible(true);
-            $properties[] = $property->getName();
-            $values[] = $property->getValue($this);
+            $val = $property->getValue($this);
+            // check for not being an object or array
+            if (is_string($val) || is_int($val) || is_float($val) || is_bool($val)) {
+                $properties[] = $property->getName();
+                $values[] = $val;
+            }
+
         }
 
         return [$properties, $values];
@@ -81,15 +86,18 @@ abstract class DatabaseCommons
         $id = '';
         foreach ($reflection->getProperties() as $property) {
             $property->setAccessible(true);
-            $propertyName = $property->getName();
-            $propertyValue = $property->getValue($this);
+            $val = $property->getValue($this);
+            // check for not being an object or array
+            if (is_string($val) || is_int($val) || is_float($val) || is_bool($val)) {
+                $propertyName = $property->getName();
 
-            if ($propertyName !== $idName) {  // Skip the primary key for the update set
-                $properties[] = "$propertyName = ?";
-                $values[] = $propertyValue;
-            } else {
-                // The id is used in the WHERE clause
-                $id = $propertyValue;
+                if ($propertyName !== $idName) {  // Skip the primary key for the update set
+                    $properties[] = "$propertyName = ?";
+                    $values[] = $val;
+                } else {
+                    // The id is used in the WHERE clause
+                    $id = $val;
+                }
             }
         }
 

@@ -6,6 +6,7 @@ use Exception;
 
 abstract class RESTController
 {
+
     /**
      * Property: method
      * The HTTP method this request was made in, either GET, POST, PUT or DELETE
@@ -37,7 +38,7 @@ abstract class RESTController
      * Property: file
      * Stores the input of the PUT request
      */
-    protected ?string $file = null;
+    protected ?array $file = null;
 
     /**
      * Constructor: __construct

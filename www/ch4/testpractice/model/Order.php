@@ -2,12 +2,13 @@
 
 namespace model;
 
+
 class Order extends DatabaseCommons implements DatabaseObject
 {
     private int $orderID = 0;
     private string $orderDate;
     private float $amount;
-    private int $customerId;
+    private int $customerId = 0;
 
     private ?Customer $customer = null;
 
@@ -25,6 +26,7 @@ class Order extends DatabaseCommons implements DatabaseObject
     {
         $ret = self::getHelper("Orders", $id, "orderID");
         $ret->setCustomer(Customer::get($ret->getCustomerId()));
+        $ret->setOrderID($id);
         return $ret;
     }
 
@@ -40,7 +42,7 @@ class Order extends DatabaseCommons implements DatabaseObject
 
     public static function delete(int $id): bool
     {
-        return self::deleteHelper("Orders", "orderID", $id);
+        return self::deleteHelper("Orders", $id, "orderID");
     }
 
     public function getOrderID(): int
