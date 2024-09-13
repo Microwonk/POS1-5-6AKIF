@@ -1,0 +1,110 @@
+[
+    {
+        "id": 1,
+        "title": "Software Developer",
+        "description": "We are seeking a skilled Software Developer to join our team. You will be responsible for developing and maintaining software applications.",
+        "requirements": "Requirements: Bachelor's degree in Computer Science or related field, proficiency in programming languages such as Java or Python, experience with database management systems.",
+        "salary": 60000,
+        "location": "New York",
+        "posting_date": "2023-07-01"
+    },
+    {
+        "id": 2,
+        "title": "Marketing Manager",
+        "description": "We are looking for an experienced Marketing Manager to lead our marketing campaigns. You will be responsible for developing and executing marketing strategies to promote our products and services.",
+        "requirements": "Requirements: Bachelor's degree in Marketing or related field, proven experience in developing and executing marketing strategies, strong analytical and project management skills.",
+        "salary": 70000,
+        "location": "San Francisco",
+        "posting_date": "2023-07-02"
+    },
+    {
+        "id": 3,
+        "title": "Sales Representative",
+        "description": "We have an exciting opportunity for a Sales Representative to join our sales team. Your primary responsibility will be to generate leads, build relationships with clients, and close sales.",
+        "requirements": "Requirements: Excellent communication and negotiation skills, proven sales experience, ability to build and maintain customer relationships.",
+        "salary": 50000,
+        "location": "Chicago",
+        "posting_date": "2023-07-03"
+    },
+    {
+        "id": 4,
+        "title": "UX Designer",
+        "description": "We are seeking a creative UX Designer to enhance user experiences. Your role will involve designing user interfaces, conducting user research, and creating wireframes and prototypes.",
+        "requirements": "Requirements: Bachelor's degree in Design or related field, strong portfolio showcasing UX design skills, proficiency in design tools such as Sketch or Adobe XD.",
+        "salary": 55000,
+        "location": "Seattle",
+        "posting_date": "2023-07-04"
+    },
+    {
+        "id": 5,
+        "title": "Data Analyst",
+        "description": "We are hiring a Data Analyst to analyze and interpret complex data sets. You will be responsible for collecting, cleansing, and analyzing data to provide valuable insights and support decision-making.",
+        "requirements": "Requirements: Bachelor's degree in Statistics, Mathematics, or related field, strong analytical and problem-solving skills, proficiency in data analysis tools such as SQL and Python.",
+        "salary": 65000,
+        "location": "Boston",
+        "posting_date": "2023-07-05"
+    },
+    {
+        "id": 6,
+        "title": "Operations Manager",
+        "description": "We are looking for a highly organized Operations Manager to oversee daily operations. You will be responsible for optimizing processes, managing resources, and ensuring efficiency and productivity.",
+        "requirements": "Requirements: Bachelor's degree in Business Administration or related field, proven experience in operations management, excellent leadership and problem-solving skills.",
+        "salary": 75000,
+        "location": "Los Angeles",
+        "posting_date": "2023-07-06"
+    },
+    {
+        "id": 7,
+        "title": "Web Developer",
+        "description": "We are seeking a talented Web Developer to join our dynamic team. You will be responsible for designing, coding, and modifying websites and web applications.",
+        "requirements": "Requirements: Bachelor's degree in Computer Science or related field, proficiency in HTML, CSS, JavaScript, and experience with front-end frameworks such as React or Angular.",
+        "salary": 55000,
+        "location": "London",
+        "posting_date": "2023-07-07"
+    },
+    {
+        "id": 8,
+        "title": "Graphic Designer",
+        "description": "We are looking for a creative Graphic Designer to join our design team. Your role will involve creating visual concepts and assets for various marketing materials.",
+        "requirements": "Requirements: Bachelor's degree in Graphic Design or related field, proficiency in design software such as Adobe Photoshop and Illustrator, and a strong portfolio showcasing your design skills.",
+        "salary": 50000,
+        "location": "Paris",
+        "posting_date": "2023-07-08"
+    },
+    {
+        "id": 9,
+        "title": "Data Scientist",
+        "description": "We have an exciting opportunity for a Data Scientist to analyze and interpret complex data sets. You will be responsible for applying advanced statistical analysis and machine learning techniques.",
+        "requirements": "Requirements: Master's degree or PhD in Data Science, Statistics, or related field, strong programming skills in languages such as Python or R, and experience with data visualization tools.",
+        "salary": 75000,
+        "location": "Berlin",
+        "posting_date": "2023-07-09"
+    },
+    {
+        "id": 10,
+        "title": "Operations Coordinator",
+        "description": "We are seeking an Operations Coordinator to support our daily operations. Your role will involve coordinating schedules, managing documentation, and ensuring smooth workflow.",
+        "requirements": "Requirements: Bachelor's degree in Business Administration or related field, excellent organizational and multitasking abilities, and strong attention to detail.",
+        "salary": 45000,
+        "location": "Toronto",
+        "posting_date": "2023-07-10"
+    },
+    {
+        "id": 11,
+        "title": "Quality Assurance Engineer",
+        "description": "We are looking for a meticulous Quality Assurance Engineer to ensure the quality and functionality of our software products. You will be responsible for designing and executing test plans.",
+        "requirements": "Requirements: Bachelor's degree in Computer Science or related field, strong knowledge of software testing methodologies, and experience with automated testing tools.",
+        "salary": 60000,
+        "location": "San Francisco",
+        "posting_date": "2023-07-11"
+    },
+    {
+        "id": 12,
+        "title": "Financial Analyst",
+        "description": "We have an opening for a Financial Analyst to analyze financial data and provide valuable insights. You will be responsible for forecasting, budgeting, and financial reporting.",
+        "requirements": "Requirements: Bachelor's degree in Finance, Accounting, or related field, strong analytical and problem-solving skills, and proficiency in financial analysis software.",
+        "salary": 65000,
+        "location": "New York",
+        "posting_date": "2023-07-12"
+    }
+]

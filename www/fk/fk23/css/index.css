@@ -1,0 +1,28 @@
+#chart {
+    margin-top: 2em;
+}
+
+.glyphicon {
+        position: relative;
+        top: 1px;
+        display: inline-block;
+        height: 1em;
+        width: 1em;
+}
+
+
+.glyphicon-eye-open{
+    background: url(../img/eye-regular.svg) center;
+}
+.glyphicon-pencil{
+    background: url(../img/pencil.svg) center;
+}
+.glyphicon-remove{
+    background: url(../img/x.svg) center;
+}
+.glyphicon-search{
+    background: url(../img/search.svg) center;
+}
+.glyphicon-plus{
+    background: url(../img/plus-circle.svg) center;
+}
