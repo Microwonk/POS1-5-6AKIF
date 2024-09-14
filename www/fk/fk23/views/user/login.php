@@ -17,6 +17,9 @@
             }
             $message .= "</ul></div>";
             echo $message;
+        } else {
+            header("Location: ./index.php");
+            exit(0);
         }
     }
 

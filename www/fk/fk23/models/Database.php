@@ -2,35 +2,35 @@
 
 class Database
 {
-    private static $dbName = 'application_database';
-    private static $dbHost = 'localhost';
-    private static $dbUsername = 'root';
-    private static $dbUserPassword = '';
+    private static string $dbName = 'application_database';
+    private static string $dbHost = 'mysql';
+    private static string $dbUsername = 'root';
+    private static string $dbUserPassword = '123';
 
-    private static $conn = null;
+    public ?PDO $conn;
 
-    public function __construct()
+    private function __construct(PDO $conn)
     {
-        exit('Init function is not allowed');
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->conn = $conn;
     }
 
-    public static function connect()
+    private static ?Database $CONNECTION = null;
+
+    public static function get(): ?PDO
     {
-        // One connection through whole application
-        if (null == self::$conn) {
+        if (self::$CONNECTION == null) {
             try {
-                self::$conn = new PDO("mysql:host=" . self::$dbHost . ";" . "dbname=" . self::$dbName, self::$dbUsername, self::$dbUserPassword);
+                self::$CONNECTION = new Database(new PDO("mysql:host=" . self::$dbHost . ";port=3306;" . "dbname=" . self::$dbName, self::$dbUsername, self::$dbUserPassword));
             } catch (PDOException $e) {
                 die($e->getMessage());
             }
         }
-        self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return self::$conn;
+        return self::$CONNECTION->conn;
     }
 
-    public static function disconnect()
-    {
-        self::$conn = null;
+    public static function disconnect() {
+        self::$CONNECTION = null;
     }
 }
 

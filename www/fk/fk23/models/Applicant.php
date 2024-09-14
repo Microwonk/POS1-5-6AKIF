@@ -5,43 +5,70 @@ require_once("JobOffer.php");
 
 class Applicant implements DatabaseObject, JsonSerializable
 {
-    private $id;
-    private $first_name;
-    private $last_name;
-    private $email;
-    private $phone;
+    private int $id;
+    private string $first_name;
+    private string $last_name;
+    private string $email;
+    private string $phone;
     private $resume;
-    private $application_date;
-    private $joboffer_id;
-    private $jobOffer;
-    private $errors = [];
+    private string $application_date;
+    private int $joboffer_id;
+    private ?JobOffer $jobOffer = null;
+    private array $errors = [];
 
 
     //Teil B: Befüllen Sie  die CRUD-Methoden nach ORM-Pattern für den DB-Zugriff und erstellen Sie die Methode save() laut Angabe
 
-    public static function getAll()
-    {
-        return [];
+    public function save(): bool {
+        if ($this->validate()) {
+            if ($this->id && $this->id != 0) {
+                $this->create();
+            } else {
+                $this->update();
+            }
+            return true;
+        }
+        return false;
     }
 
-    public static function get($id)
+    public static function getAll(): array
     {
-        return [];
+        $db = Database::get();
+        $stmt = $db->prepare("SELECT * FROM applicants");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_CLASS, self::class);
+    }
+
+    public static function get($id): ?static
+    {
+        $db = Database::get();
+        $stmt = $db->prepare("SELECT * FROM applicants WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetchObject(self::class);
     }
 
     public function create()
     {
-
+        $db = Database::get();
+        $stmt = $db->prepare("INSERT INTO applicants (first_name, last_name, email, phone, resume, application_date, joboffer_id) values(?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$this->first_name, $this->last_name, $this->email, $this->phone, $this->resume, $this->application_date, $this->joboffer_id]);
+        return $db->lastInsertId();
     }
 
-    public function update()
+    public function update(): bool
     {
-
+        $db = Database::get();
+        $stmt = $db->prepare("UPDATE applicants set first_name = ?, set last_name = ?, set email = ?, set phone = ?, set resume = ? set application_date = ?, joboffer_id = ? where id = ?");
+        // return success
+        return $stmt->execute([$this->first_name, $this->last_name, $this->email, $this->phone, $this->resume, $this->application_date, $this->joboffer_id, $this->id]);
     }
 
     public static function delete($id)
     {
-
+        $db = Database::get();
+        $stmt = $db->prepare("DELETE FROM applicants WHERE id = ?");
+        $stmt->execute([$id]);
+        return $db->lastInsertId();
     }
 
 
@@ -310,6 +337,12 @@ class Applicant implements DatabaseObject, JsonSerializable
      */
     public function getJobOffer()
     {
+        if ($this->jobOffer == null) {
+            $db = Database::get();
+            $stmt = $db->prepare("SELECT * FROM joboffers WHERE id = ?");
+            $stmt->execute([$this->getJobOfferId()]);
+            $this->jobOffer = $stmt->fetchObject(JobOffer::class);
+        }
         return $this->jobOffer;
     }
 

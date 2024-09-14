@@ -23,7 +23,6 @@ class HomeController extends Controller
 
     public function actionIndex()
     {
-        var_dump(User::isLoggedIn());
         if (User::isLoggedIn()) {
             $model = JobOffer::getAll();
             $this->render('joboffer/index', $model);
