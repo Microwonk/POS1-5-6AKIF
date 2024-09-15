@@ -22,9 +22,9 @@ class Applicant implements DatabaseObject, JsonSerializable
     public function save(): bool {
         if ($this->validate()) {
             if ($this->id && $this->id != 0) {
-                $this->create();
-            } else {
                 $this->update();
+            } else {
+                $this->id = $this->create();
             }
             return true;
         }
@@ -33,42 +33,45 @@ class Applicant implements DatabaseObject, JsonSerializable
 
     public static function getAll(): array
     {
+        $sql = "SELECT * FROM applicants";
         $db = Database::get();
-        $stmt = $db->prepare("SELECT * FROM applicants");
+        $stmt = $db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_CLASS, self::class);
     }
 
     public static function get($id): ?static
     {
+        $sql = "SELECT * FROM applicants WHERE id = ?";
         $db = Database::get();
-        $stmt = $db->prepare("SELECT * FROM applicants WHERE id = ?");
+        $stmt = $db->prepare($sql);
         $stmt->execute([$id]);
-        return $stmt->fetchObject(self::class);
+        return $stmt->fetch(self::class);
     }
 
     public function create()
     {
+        $sql = "INSERT INTO applicants (first_name, last_name, email, phone, resume, application_date, joboffer_id) values (?, ?, ?, ?, ?, ?, ?)";
         $db = Database::get();
-        $stmt = $db->prepare("INSERT INTO applicants (first_name, last_name, email, phone, resume, application_date, joboffer_id) values(?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $db->prepare($sql);
         $stmt->execute([$this->first_name, $this->last_name, $this->email, $this->phone, $this->resume, $this->application_date, $this->joboffer_id]);
         return $db->lastInsertId();
     }
 
     public function update(): bool
     {
+        $sql = "UPDATE applicants set first_name = ?, set last_name = ?, set email = ?, set phone = ?, set resume = ?, set application_date = ?, set joboffer_id = ?";
         $db = Database::get();
-        $stmt = $db->prepare("UPDATE applicants set first_name = ?, set last_name = ?, set email = ?, set phone = ?, set resume = ? set application_date = ?, joboffer_id = ? where id = ?");
-        // return success
-        return $stmt->execute([$this->first_name, $this->last_name, $this->email, $this->phone, $this->resume, $this->application_date, $this->joboffer_id, $this->id]);
+        $stmt = $db->prepare($sql);
+        return $stmt->execute([$this->first_name, $this->last_name, $this->email, $this->phone, $this->resume, $this->application_date, $this->joboffer_id]);
     }
 
     public static function delete($id)
     {
+        $sql = "DELETE FROM applicants WHERE id = ?";
         $db = Database::get();
-        $stmt = $db->prepare("DELETE FROM applicants WHERE id = ?");
+        $stmt = $db->prepare($sql);
         $stmt->execute([$id]);
-        return $db->lastInsertId();
     }
 
 

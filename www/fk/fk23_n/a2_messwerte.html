@@ -1,0 +1,56 @@
+<html>
+<head>
+    <link href="bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+    <label for="search">Filter: </label>
+    <input class="" type="search" id="search" />
+    <table id="table" class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Datum</th>
+            <th>CO2-Wert</th>
+        </tr>
+        </thead>
+        <tbody id="tbody">
+
+        </tbody>
+    </table>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async event => {
+            const tbody = document.getElementById("tbody");
+            const search = document.getElementById("search");
+
+            const renderTable = (entries) => {
+                tbody.innerHTML = "";
+                entries.forEach(e => {
+                    let row = document.createElement("tr");
+                    let id = document.createElement("td");
+                    id.textContent = e.id;
+                    let date = document.createElement("td");
+                    date.textContent = e.datum;
+                    let co2 = document.createElement("td");
+                    co2.textContent = e.wert;
+
+                    row.appendChild(id);
+                    row.appendChild(date);
+                    row.appendChild(co2);
+                    tbody.appendChild(row);
+                });
+            }
+
+            search.addEventListener("keyup", async event => {
+                let txt = search.value;
+                let fetchedEntries = await fetch("http://localhost:8083/fk/fk23_n/api.php").then(r => r.json());
+                renderTable(fetchedEntries.filter(e => e.datum.includes(txt)));
+            });
+
+            let fetchedEntries = await fetch("http://localhost:8083/fk/fk23_n/api.php").then(r => r.json());
+            renderTable(fetchedEntries);
+
+        });
+    </script>
+</body>
+</html>

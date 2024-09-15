@@ -14,7 +14,7 @@
             <button id="btnSearch" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> Alle Bewerber anzeigen</button>
             <br/>
 
-        <table class="table table-striped table-bordered">
+        <table class="table table-striped table-bordered table-hover">
             <thead>
             <tr>
                 <th id="firstname-sort">Vorname</th>

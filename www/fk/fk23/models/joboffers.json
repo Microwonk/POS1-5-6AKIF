@@ -1,14 +1,5 @@
 [
     {
-        "id": 1,
-        "title": "Software Developer",
-        "description": "We are seeking a skilled Software Developer to join our team. You will be responsible for developing and maintaining software applications.",
-        "requirements": "Requirements: Bachelor's degree in Computer Science or related field, proficiency in programming languages such as Java or Python, experience with database management systems.",
-        "salary": 60000,
-        "location": "New York",
-        "posting_date": "2023-07-01"
-    },
-    {
         "id": 2,
         "title": "Marketing Manager",
         "description": "We are looking for an experienced Marketing Manager to lead our marketing campaigns. You will be responsible for developing and executing marketing strategies to promote our products and services.",
@@ -106,5 +97,14 @@
         "salary": 65000,
         "location": "New York",
         "posting_date": "2023-07-12"
+    },
+    {
+        "id": 13,
+        "title": "asdasd",
+        "description": "asdasdasd",
+        "requirements": "asdasdasd",
+        "salary": "123",
+        "location": "asdasdasd",
+        "posting_date": "13.04.2024"
     }
 ]
